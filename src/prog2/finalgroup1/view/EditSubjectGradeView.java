@@ -12,6 +12,7 @@ import prog2.finalgroup1.model.UserModel;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.*;
@@ -27,8 +28,11 @@ public class EditSubjectGradeView extends JPanel {
     private String[][] excelData;
     private final String[] columnTitle = {"COURSE CODE", "COMPUTER SCIENCE", "UNITS", "GRADES"};
     private JScrollPane pane;
+    private DefaultTableModel model;
+    private UserModel userModel;
+    private ExcelSheetData[] data;
 
-    public EditSubjectGradeView(ExcelSheetData[] data, UserModel model) {
+    public EditSubjectGradeView(ExcelSheetData[] data, UserModel userModel) {
 
         GridBagLayout mainGrid = new GridBagLayout();
         GridBagConstraints constraints = new GridBagConstraints();
@@ -36,10 +40,13 @@ public class EditSubjectGradeView extends JPanel {
         setLayout(mainGrid);
         setBackground(Color.cyan);
 
-        excelData = processedData(data);
+        this.userModel = userModel;
+        this.data = data;
+
+        excelData = processedData();
         saveData = new JButton("Apply");
 
-        setUpTable(model);
+        setUpTable();
 
         pane = new JScrollPane(tableOfData);
         pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -69,10 +76,9 @@ public class EditSubjectGradeView extends JPanel {
         add(pane);
 
     }
-
-    public void setUpTable(UserModel model) {
-        tableOfData = new JTable(excelData, columnTitle) {
-
+    public void setUpTable() {
+        validateTable();
+        tableOfData = new JTable(model) {
             // Set each column to be non-editable except fourth column
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -87,7 +93,7 @@ public class EditSubjectGradeView extends JPanel {
             public void tableChanged(TableModelEvent e) {
 
                 try {
-                    saveUserInput(model, e);
+                    saveUserInput(userModel, e);
 
                 } catch (InvalidFormatException | IOException ex) {
                     throw new RuntimeException(ex);
@@ -95,6 +101,13 @@ public class EditSubjectGradeView extends JPanel {
 
             }
         });
+    }
+
+    private void validateTable() {
+        model = new DefaultTableModel(excelData, columnTitle);
+    }
+
+    private void insertNewDataInTable() {
     }
 
     public void saveUserInput(UserModel userModel, TableModelEvent e) throws InvalidFormatException, IOException {
@@ -122,8 +135,6 @@ public class EditSubjectGradeView extends JPanel {
                 cell.setCellValue(String.valueOf(data));
             }
         }
-//                }
-
 
         // Write the output to a file
             try(
@@ -137,7 +148,7 @@ public class EditSubjectGradeView extends JPanel {
 
     }
 
-    public String[][] processedData (ExcelSheetData[] data) {
+    public String[][] processedData() {
         String[][] allData = new String[data.length][4];
 
         String[] arr = new String[4];

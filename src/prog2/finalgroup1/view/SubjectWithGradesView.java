@@ -4,32 +4,22 @@ import prog2.finalgroup1.model.ExcelSheetData;
 import prog2.finalgroup1.model.UserModel;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class SubjectWithGradesView extends JPanel {
-    /*
-    TO DO:
-    - create a panel for adding course of the user with grades
-            - components of a panel: -> display bscs courses offered involving a checkbox
-                - new button if user course is not displayed -> [text field -> specify the course name, year,
-                semester, unit, and grade -> two buttons (i.e., back and add)]
-                - two buttons (i.e., back and add)
-                - add button only consider or take the checked box
-                - uncheck box = jtable not editable
-                - check box = jtable editable
-     */
     private AdditionalCourseView additionalCourseView;
     private JButton backMainMenu;
-    private JButton addCourse;
+    private JButton addNewCourse;
     private JTable tableOfData;
     private String[][] excelData;
-    private final String[] columnTitle = {"YEAR", "SEMESTER","COURSE CODE", "COMPUTER SCIENCE", "UNITS", "GRADES"};
+    private final String[] columnTitle = {"YEAR", "SEMESTER", "COURSE CODE", "COMPUTER SCIENCE", "UNITS", "GRADES"};
     private JScrollPane pane;
+    private DefaultTableModel model;
 
-    public SubjectWithGradesView(ExcelSheetData[] data, UserModel model)
-    {
+    public SubjectWithGradesView(ExcelSheetData[] data, UserModel model) {
         GridBagLayout mainGrid = new GridBagLayout();
         GridBagConstraints constraints = new GridBagConstraints();
         setPreferredSize(new Dimension(800, 500));
@@ -55,8 +45,8 @@ public class SubjectWithGradesView extends JPanel {
             }
         });
 
-        addCourse = new JButton("Add Course");
-        addCourse.addMouseListener(new MouseAdapter() {
+        addNewCourse = new JButton("Add Course");
+        addNewCourse.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -75,27 +65,41 @@ public class SubjectWithGradesView extends JPanel {
         add(this.backMainMenu, constraints);
 
         add(pane);
-        add(addCourse);
+        add(addNewCourse);
     }
 
     private void setUpTable() {
-        tableOfData = new JTable(excelData, columnTitle);
+        model = new DefaultTableModel(excelData, columnTitle);
+        tableOfData = new JTable(model);
         tableOfData.setEnabled(false);
     }
 
     private void displayAddCourseComponent(UserModel model) {
         additionalCourseView = new AdditionalCourseView(model);
+        JButton additionalCourse = additionalCourseView.getAdditionalCourse();
+        additionalCourse.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                insertNewDataInTable();
+
+            }
+        });
+
     }
 
+    public void insertNewDataInTable() {
+        model.insertRow(tableOfData.getRowCount(), additionalCourseView.getDataToString());
+    }
 
-    public String[][] processedData (ExcelSheetData[] data) {
+    public String[][] processedData(ExcelSheetData[] data) {
         String allData[][] = new String[data.length][6];
 
         String arr[] = new String[6];
 
-        int i=0;
-        while (i < data.length)
-        {
+        int i = 0;
+        while (i < data.length) {
             for (ExcelSheetData pureData : data) {
                 arr[0] = String.valueOf(pureData.getYear());
                 arr[1] = String.valueOf(pureData.getTerm());

@@ -2,7 +2,6 @@ package prog2.finalgroup1.view;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -15,7 +14,6 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class AdditionalCourseView extends JFrame {
     private JComboBox<String> semester;
@@ -26,6 +24,11 @@ public class AdditionalCourseView extends JFrame {
     private JTextField courseTitle;
     private JTextField units;
     private JTextField grades;
+    private JButton additionalCourse;
+    private JButton back;
+    private UserModel userModel;
+    private ExcelSheetData newData;
+    private String[] dataToString;
 
     AdditionalCourseView(UserModel userModel)
     {
@@ -37,15 +40,17 @@ public class AdditionalCourseView extends JFrame {
         mainPanel.setPreferredSize(new Dimension(400, 400));
         mainPanel.setBackground(Color.cyan);
 
-        JButton additionalCourse = new JButton("Add");
+        this.userModel = userModel;
+
+        additionalCourse = new JButton("Add");
         additionalCourse.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
                 try {
-                    ExcelSheetData newData = addedCourse();
-                    insertUserNewData(userModel, newData);
+                     newData = addedCourse();
+                     insertUserNewData();
                 } catch (InvalidFormatException | IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -53,7 +58,7 @@ public class AdditionalCourseView extends JFrame {
             }
         });
 
-        JButton back = new JButton("Back");
+        back = new JButton("Back");
         back.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -174,15 +179,14 @@ public class AdditionalCourseView extends JFrame {
 
     }
 
-    private void insertUserNewData(UserModel userModel, ExcelSheetData newData) throws InvalidFormatException, IOException {
-        String[] dataToString = {String.valueOf(newData.getYear()), String.valueOf(newData.getTerm()),
+    private void insertUserNewData() throws InvalidFormatException, IOException {
+        dataToString = new String[]{String.valueOf(newData.getYear()), String.valueOf(newData.getTerm()),
                 newData.getCourseNumber(), newData.getDescriptiveTitle(), String.valueOf(newData.getUnits()),
                 newData.getGrades()};
 
         OPCPackage pkg2 = OPCPackage.open(new File("res/StudentData.xlsx"));
         XSSFWorkbook CS_studentWorkBook = new XSSFWorkbook(pkg2);
         XSSFSheet sheet;
-        Cell cell = null;
         Row row;
         Row myRow;
 
@@ -254,4 +258,35 @@ public class AdditionalCourseView extends JFrame {
         this.units = units;
     }
 
+    public JButton getAdditionalCourse() {
+        return additionalCourse;
+    }
+
+    public void setAdditionalCourse(JButton additionalCourse) {
+        this.additionalCourse = additionalCourse;
+    }
+
+    public JButton getBack() {
+        return back;
+    }
+
+    public void setBack(JButton back) {
+        this.back = back;
+    }
+
+    public ExcelSheetData getNewData() {
+        return newData;
+    }
+
+    public void setNewData(ExcelSheetData newData) {
+        this.newData = newData;
+    }
+
+    public String[] getDataToString() {
+        return dataToString;
+    }
+
+    public void setDataToString(String[] dataToString) {
+        this.dataToString = dataToString;
+    }
 }
