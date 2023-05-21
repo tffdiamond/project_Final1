@@ -188,27 +188,13 @@
           <option name="timeStamp" value="15" />
         </breakpoint>
         <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/prog2/finalgroup1/view/EditSubjectGradeView.java</url>
-          <line>116</line>
-          <properties class="prog2.finalgroup1.view.EditSubjectGradeView" method="saveUserInput">
+          <url>file://$PROJECT_DIR$/src/prog2/finalgroup1/view/AdditionalCourseView.java</url>
+          <line>176</line>
+          <properties class="prog2.finalgroup1.view.AdditionalCourseView" method="insertUserNewData">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/prog2/finalgroup1/view/EditSubjectGradeView.java</url>
-          <line>100</line>
-          <properties class="prog2.finalgroup1.view.EditSubjectGradeView">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="39" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/prog2/finalgroup1/view/EditSubjectGradeView.java</url>
-          <line>133</line>
-          <option name="timeStamp" value="40" />
+          <option name="timeStamp" value="47" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -221,5 +207,10 @@
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/_9315FinalGroupProject$Main.ic" NAME="Main Coverage Results" MODIFIED="1684671375723" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>prog2.*</FILTER>
+    </SUITE>
   </component>
 </project>

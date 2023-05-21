@@ -1,14 +1,12 @@
 package prog2.finalgroup1.view;
 
 import prog2.finalgroup1.model.ExcelSheetData;
+import prog2.finalgroup1.model.UserModel;
 
 import javax.swing.*;
-import javax.swing.event.CellEditorListener;
-import javax.swing.table.TableCellEditor;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.EventObject;
 
 public class SubjectWithGradesView extends JPanel {
     /*
@@ -30,7 +28,7 @@ public class SubjectWithGradesView extends JPanel {
     private final String[] columnTitle = {"YEAR", "SEMESTER","COURSE CODE", "COMPUTER SCIENCE", "UNITS", "GRADES"};
     private JScrollPane pane;
 
-    public SubjectWithGradesView(ExcelSheetData[] data)
+    public SubjectWithGradesView(ExcelSheetData[] data, UserModel model)
     {
         GridBagLayout mainGrid = new GridBagLayout();
         GridBagConstraints constraints = new GridBagConstraints();
@@ -63,7 +61,7 @@ public class SubjectWithGradesView extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
-                displayAddCourseComponent();
+                displayAddCourseComponent(model);
             }
         });
 
@@ -85,8 +83,8 @@ public class SubjectWithGradesView extends JPanel {
         tableOfData.setEnabled(false);
     }
 
-    private void displayAddCourseComponent() {
-        additionalCourseView = new AdditionalCourseView();
+    private void displayAddCourseComponent(UserModel model) {
+        additionalCourseView = new AdditionalCourseView(model);
     }
 
 

@@ -95,32 +95,11 @@ public class EditSubjectGradeView extends JPanel {
 
             }
         });
-
-//        tableOfData.getDefaultEditor(String.class).addCellEditorListener(new CellEditorListener() {
-//            @Override
-//            public void editingStopped(ChangeEvent e) {
-//
-//
-//
-//
-//            }
-//
-//            @Override
-//            public void editingCanceled(ChangeEvent e) {
-//
-//            }
-//        });
-
-
     }
 
     public void saveUserInput(UserModel userModel, TableModelEvent e) throws InvalidFormatException, IOException {
-        /*
-            - save user input or data change to corresponding sheet of the user in a workbook/excel
-         */
         OPCPackage pkg2 = OPCPackage.open(new File("res/StudentData.xlsx"));
         XSSFWorkbook CS_studentWorkBook = new XSSFWorkbook(pkg2);
-//        TableModel model = tableOfData.getModel();
         XSSFSheet sheet;
         Row rowExcel;
         Cell cell;
@@ -132,12 +111,7 @@ public class EditSubjectGradeView extends JPanel {
         sheet = CS_studentWorkBook.getSheet(userModel.getUsername());
 
         Object data = model.getValueAt(row, col);
-        // write the data change in appropriate sheet of a user
-//        for (int i=1; i<model.getRowCount(); i++){
-//
-//                Object data = model.getValueAt(i, model.getColumnCount()-1);
 
-//                for (int r = 1; r < sheet.getLastRowNum(); r++) {
         rowExcel = sheet.getRow(row+1);
 
         if (rowExcel != null) {

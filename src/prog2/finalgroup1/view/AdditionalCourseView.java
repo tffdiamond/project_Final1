@@ -1,15 +1,33 @@
 package prog2.finalgroup1.view;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import prog2.finalgroup1.model.ExcelSheetData;
+import prog2.finalgroup1.model.UserModel;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
+import java.awt.event.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class AdditionalCourseView extends JFrame {
     private JComboBox<String> semester;
-    private JComboBox<Integer> year;
-    AdditionalCourseView()
+    private JComboBox<String> year;
+    private String semesterItem;
+    private String yearItem;
+    private JTextField courseCode;
+    private JTextField courseTitle;
+    private JTextField units;
+    private JTextField grades;
+
+    AdditionalCourseView(UserModel userModel)
     {
         setSize(400, 400);
         GridBagLayout mainGrid = new GridBagLayout();
@@ -25,6 +43,13 @@ public class AdditionalCourseView extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
+                try {
+                    ExcelSheetData newData = addedCourse();
+                    insertUserNewData(userModel, newData);
+                } catch (InvalidFormatException | IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
             }
         });
 
@@ -37,12 +62,40 @@ public class AdditionalCourseView extends JFrame {
             }
         });
 
-        JLabel courseCodeLabel = new JLabel("Course: ");
-        JTextField courseCode = new JTextField(12);
-        JLabel courseTitleLabel = new JLabel("Course Title: ");
-        JTextField courseTitle = new JTextField(12);
+        String[] semesters = {"1","2","3"};
+        semester = new JComboBox<>(semesters);
+        semester.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-//        constraints.anchor = GridBagConstraints.FIRST_LINE_END;
+                JComboBox<?> comboBox = (JComboBox<?>) e.getSource();
+                semesterItem = (String) comboBox.getSelectedItem();
+
+            }
+        });
+
+        String[] years = {"1","2","3","4"};
+        year = new JComboBox<>(years);
+        year.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                JComboBox<?> comboBox = (JComboBox<?>) e.getSource();
+                yearItem = (String) comboBox.getSelectedItem();
+
+            }
+        });
+
+        JLabel yearLabel = new JLabel("Year: ");
+        JLabel semesterLabel = new JLabel("Semester: ");
+        JLabel courseCodeLabel = new JLabel("Course Code: ");
+        courseCode = new JTextField(12);
+        JLabel courseTitleLabel = new JLabel("Course Title: ");
+        courseTitle = new JTextField(12);
+        JLabel unitLabel = new JLabel("Units: ");
+        units = new JTextField(12);
+        JLabel gradeLabel = new JLabel("Grade: ");
+        grades = new JTextField(12);
 
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -56,24 +109,149 @@ public class AdditionalCourseView extends JFrame {
         constraints.gridy = 1;
         mainPanel.add(courseTitleLabel, constraints);
 
-//        constraints.anchor = GridBagConstraints.FIRST_LINE_END;
         constraints.gridx = 1;
         constraints.gridy = 1;
         mainPanel.add(courseTitle, constraints);
 
-//        constraints.anchor = GridBagConstraints.FIRST_LINE_END;
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        mainPanel.add(unitLabel, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        mainPanel.add(units, constraints);
+
         constraints.gridx = 0;
         constraints.gridy = 3;
-        mainPanel.add(additionalCourse, constraints);
+        mainPanel.add(semesterLabel, constraints);
 
-//        constraints.anchor = GridBagConstraints.FIRST_LINE_END;
         constraints.gridx = 1;
         constraints.gridy = 3;
+        constraints.insets = new Insets(0,0,0,90);
+        mainPanel.add(semester, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 4;
+        constraints.insets = new Insets(0,0,0,0);
+        mainPanel.add(yearLabel, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 4;
+        constraints.insets = new Insets(0,0,0,90);
+        mainPanel.add(year, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 5;
+        constraints.insets = new Insets(0,0,0,0);
+        mainPanel.add(gradeLabel, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 5;
+        constraints.insets = new Insets(0,0,0,0);
+        mainPanel.add(grades, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 6;
+        constraints.insets = new Insets(20,0,0,0);
         mainPanel.add(back, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 6;
+        constraints.insets = new Insets(20,0,0,0);
+        mainPanel.add(additionalCourse, constraints);
+
 
         add(mainPanel);
 
         setVisible(true);
 
     }
+
+    private ExcelSheetData addedCourse() {
+
+        return new ExcelSheetData(Integer.parseInt(yearItem), Integer.parseInt(semesterItem), courseCode.getText()
+                , courseTitle.getText(), Double.parseDouble(units.getText()), grades.getText());
+
+    }
+
+    private void insertUserNewData(UserModel userModel, ExcelSheetData newData) throws InvalidFormatException, IOException {
+        String[] dataToString = {String.valueOf(newData.getYear()), String.valueOf(newData.getTerm()),
+                newData.getCourseNumber(), newData.getDescriptiveTitle(), String.valueOf(newData.getUnits()),
+                newData.getGrades()};
+
+        OPCPackage pkg2 = OPCPackage.open(new File("res/StudentData.xlsx"));
+        XSSFWorkbook CS_studentWorkBook = new XSSFWorkbook(pkg2);
+        XSSFSheet sheet;
+        Cell cell = null;
+        Row row;
+        Row myRow;
+
+        sheet = CS_studentWorkBook.getSheet(userModel.getUsername());
+        int rows = sheet.getLastRowNum();
+        myRow = sheet.createRow(rows + 1);
+        row = sheet.getRow(sheet.getLastRowNum() - 1);
+
+        if (row != null)
+        {
+            for (int i=0; i<row.getLastCellNum(); i++)
+            {
+                myRow.createCell(i);
+            }
+
+            for (int j = 0 ; j < myRow.getLastCellNum() || j < dataToString.length; j++) {
+                if (myRow.getCell(j) != null) {
+                    myRow.getCell(j).setCellValue(dataToString[j]);
+                }
+            }
+
+        }
+
+        try (FileOutputStream fos = new FileOutputStream("res/StudentData.xlsx", true)){
+            CS_studentWorkBook.write(fos);
+        }
+
+        pkg2.close();
+
+    }
+
+    public String getSemesterItem() {
+        return semesterItem;
+    }
+
+    public void setSemesterItem(String semesterItem) {
+        this.semesterItem = semesterItem;
+    }
+
+    public String getYearItem() {
+        return yearItem;
+    }
+
+    public void setYearItem(String yearItem) {
+        this.yearItem = yearItem;
+    }
+
+    public JTextField getCourseCode() {
+        return courseCode;
+    }
+
+    public void setCourseCode(JTextField courseCode) {
+        this.courseCode = courseCode;
+    }
+
+    public JTextField getCourseTitle() {
+        return courseTitle;
+    }
+
+    public void setCourseTitle(JTextField courseTitle) {
+        this.courseTitle = courseTitle;
+    }
+
+    public JTextField getUnits() {
+        return units;
+    }
+
+    public void setUnits(JTextField units) {
+        this.units = units;
+    }
+
 }

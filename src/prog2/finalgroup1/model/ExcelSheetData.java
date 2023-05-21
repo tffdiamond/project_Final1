@@ -9,15 +9,15 @@ public class ExcelSheetData {
     private String grades;
 
     public ExcelSheetData(int year, int term, String courseNumber, String descriptiveTitle, double units,
-                          String grade) {
+                          String grade)
+    {
         this.year = year;
         this.term = term;
         this.courseNumber = courseNumber;
         this.descriptiveTitle = descriptiveTitle;
         this.units = units;
         this.grades = grade;
-
-}
+    }
 
     public void setYear(int year) {
         this.year = year;

@@ -176,7 +176,7 @@ public class CheckListManagementInterface extends JFrame
             }
         });
 
-        this.subjectWithGradesPanel = new SubjectWithGradesView(data);
+        this.subjectWithGradesPanel = new SubjectWithGradesView(data, model);
         subjectWithGradesPanel.getBackMainMenu().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
