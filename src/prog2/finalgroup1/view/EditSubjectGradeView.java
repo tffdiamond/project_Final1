@@ -26,13 +26,16 @@ public class EditSubjectGradeView extends JPanel {
     private JButton saveData;
     private JTable tableOfData;
     private String[][] excelData;
-    private final String[] columnTitle = {"COURSE CODE", "COMPUTER SCIENCE", "UNITS", "GRADES"};
+    private final String[] columnTitle = {"COURSE CODE", "DESCRIPTIVE TITLE", "UNITS", "GRADES"};
     private JScrollPane pane;
     private DefaultTableModel model;
     private UserModel userModel;
-    private ExcelSheetData[] data;
+    private ExcelSheetData[] sheetData;
+    private int row;
+    private int column;
+    private Object data;
 
-    public EditSubjectGradeView(ExcelSheetData[] data, UserModel userModel) {
+    public EditSubjectGradeView(ExcelSheetData[] sheetData, UserModel userModel) {
 
         GridBagLayout mainGrid = new GridBagLayout();
         GridBagConstraints constraints = new GridBagConstraints();
@@ -41,12 +44,20 @@ public class EditSubjectGradeView extends JPanel {
         setBackground(Color.cyan);
 
         this.userModel = userModel;
-        this.data = data;
+        this.sheetData = sheetData;
 
         excelData = processedData();
-        saveData = new JButton("Apply");
 
         setUpTable();
+
+        saveData = new JButton("Apply");
+        saveData.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+            }
+        });
 
         pane = new JScrollPane(tableOfData);
         pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -62,7 +73,6 @@ public class EditSubjectGradeView extends JPanel {
             }
         });
 
-        // TO DO: position each component
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -76,8 +86,9 @@ public class EditSubjectGradeView extends JPanel {
         add(pane);
 
     }
-    public void setUpTable() {
-        validateTable();
+
+    private void setUpTable() {
+        model = new DefaultTableModel(excelData, columnTitle);
         tableOfData = new JTable(model) {
             // Set each column to be non-editable except fourth column
             @Override
@@ -93,70 +104,72 @@ public class EditSubjectGradeView extends JPanel {
             public void tableChanged(TableModelEvent e) {
 
                 try {
-                    saveUserInput(userModel, e);
-
+                    saveUserInput(e);
                 } catch (InvalidFormatException | IOException ex) {
                     throw new RuntimeException(ex);
                 }
 
             }
         });
+
     }
 
-    private void validateTable() {
-        model = new DefaultTableModel(excelData, columnTitle);
+    public void insertNewDataInTable(String[] dataToString) {
+        String[] newData = {dataToString[2], dataToString[3], dataToString[4], dataToString[5]};
+        model.insertRow(tableOfData.getRowCount(), newData);
     }
 
-    private void insertNewDataInTable() {
-    }
-
-    public void saveUserInput(UserModel userModel, TableModelEvent e) throws InvalidFormatException, IOException {
+    public void saveUserInput(TableModelEvent e) throws InvalidFormatException, IOException {
         OPCPackage pkg2 = OPCPackage.open(new File("res/StudentData.xlsx"));
         XSSFWorkbook CS_studentWorkBook = new XSSFWorkbook(pkg2);
         XSSFSheet sheet;
         Row rowExcel;
         Cell cell;
         int lastCell;
-        int row = e.getFirstRow();
-        int col = e.getColumn();
+        row = e.getFirstRow();
+        column = e.getColumn();
         TableModel model = (TableModel) e.getSource();
 
         sheet = CS_studentWorkBook.getSheet(userModel.getUsername());
 
-        Object data = model.getValueAt(row, col);
+        if (column == -1)
+        {
+            return;
+        }
+        else {
+            data = model.getValueAt(row, column);
 
-        rowExcel = sheet.getRow(row+1);
+            rowExcel = sheet.getRow(row + 1);
 
-        if (rowExcel != null) {
-            lastCell = rowExcel.getLastCellNum();
-            cell = rowExcel.getCell(lastCell - 1);
+            if (rowExcel != null) {
+                lastCell = rowExcel.getLastCellNum();
+                cell = rowExcel.getCell(lastCell - 1);
 
-            if (!cell.equals(data)) {
-                cell.setCellValue(String.valueOf(data));
+                if (!cell.equals(data)) {
+                    cell.setCellValue(String.valueOf(data));
+                }
+
             }
         }
 
         // Write the output to a file
-            try(
-        OutputStream fileOut = new FileOutputStream("res/StudentData.xlsx", true))
-
-        {
+        try (OutputStream fileOut = new FileOutputStream("res/StudentData.xlsx", true)) {
             CS_studentWorkBook.write(fileOut);
         }
 
-            pkg2.close();
+        pkg2.close();
 
     }
 
     public String[][] processedData() {
-        String[][] allData = new String[data.length][4];
+        String[][] allData = new String[sheetData.length][4];
 
         String[] arr = new String[4];
 
         int i=0;
-        while (i < data.length)
+        while (i < sheetData.length)
         {
-            for (ExcelSheetData pureData : data) {
+            for (ExcelSheetData pureData : sheetData) {
                 arr[0] = pureData.getCourseNumber();
                 arr[1] = pureData.getDescriptiveTitle();
                 arr[2] = String.valueOf(pureData.getUnits());
@@ -186,5 +199,45 @@ public class EditSubjectGradeView extends JPanel {
 
     public void setSaveData(JButton saveData) {
         this.saveData = saveData;
+    }
+
+    public JTable getTableOfData() {
+        return tableOfData;
+    }
+
+    public void setTableOfData(JTable tableOfData) {
+        this.tableOfData = tableOfData;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
+
+    public DefaultTableModel getModel() {
+        return model;
+    }
+
+    public void setModel(DefaultTableModel model) {
+        this.model = model;
     }
 }

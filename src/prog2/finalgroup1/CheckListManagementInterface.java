@@ -3,12 +3,10 @@ package prog2.finalgroup1;
 import prog2.finalgroup1.model.ExcelSheetData;
 import prog2.finalgroup1.model.UserModel;
 import prog2.finalgroup1.view.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 
 public class CheckListManagementInterface extends JFrame
 {
@@ -23,27 +21,20 @@ public class CheckListManagementInterface extends JFrame
     private SubjectWithGradesView subjectWithGradesPanel;
     private EditSubjectGradeView editSubjectGradePanel;
     private EditCourseView editCoursePanel;
-
-    private JButton subjects, subjectsWithGrades, enterGrades, courseEdit, backMainMenu, quit;
-
-    private JButton buttonActive = null;
-    private JButton login = null;
-    private final JPanel cardPanel; // -> is a container for each child panel, setting it to have a card layout means
-    // that
-    // each of the child panel is inside the cardPanel container -> show method of the card layout -> display the
-    // appropriate panel in the container
+    private JButton subjects, subjectsWithGrades, enterGrades, courseEdit;
+    private final JPanel cardPanel;
     private final JPanel mainMenuPanel;
     CheckListManagementInterface()
     {
 
         GridBagLayout mainGrid = new GridBagLayout();
-        GridBagConstraints constraints = new GridBagConstraints(); // -> TO DO: position each button in the gui
+        GridBagConstraints constraints = new GridBagConstraints();
 
         mainMenuPanel = new JPanel();
         mainMenuPanel.setLayout(mainGrid);
 
         this.loginView = new LoginView();
-        login = loginView.getUserLogin();
+        JButton login = loginView.getUserLogin();
         login.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -115,7 +106,6 @@ public class CheckListManagementInterface extends JFrame
             }
         });
 
-
         // add buttons in the main menu panel
         mainMenuPanel.add(subjects);
         mainMenuPanel.add(subjectsWithGrades);
@@ -143,8 +133,6 @@ public class CheckListManagementInterface extends JFrame
         cardPanel.add(editSubjectGradePanel, EditSubjectGradePanelID);
         cardPanel.add(editCoursePanel, EditCourseID);
     }
-
-
     private void displayCourseEditComponent() {
         changeScreen(EditCourseID);
     }
@@ -188,6 +176,27 @@ public class CheckListManagementInterface extends JFrame
             }
         });
 
+        subjectWithGradesPanel.getAddNewCourse().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                subjectWithGradesPanel.getAdditionalCourse().addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        super.mouseClicked(e);
+
+                        // Insert on last row the recent added course in each table of sub panels
+                        subjectPanel.insertNewDataInTable(subjectWithGradesPanel.getAdditionalCourseView().getDataToString());
+                        editSubjectGradePanel.insertNewDataInTable(subjectWithGradesPanel.getAdditionalCourseView().getDataToString());
+                        editCoursePanel.insertNewDataInTable(subjectWithGradesPanel.getAdditionalCourseView().getDataToString());
+
+                    }
+                });
+
+            }
+        });
+
         this.editSubjectGradePanel = new EditSubjectGradeView(data, model);
         editSubjectGradePanel.getBackMainMenu().addMouseListener(new MouseAdapter() {
             @Override
@@ -197,6 +206,20 @@ public class CheckListManagementInterface extends JFrame
                 // go back in main menu panel
                 changeScreen(mainMenuPanelID);
 
+            }
+        });
+
+        editSubjectGradePanel.getSaveData().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                // update the table correspond to the new data
+                int row = editSubjectGradePanel.getRow();
+                int col = editSubjectGradePanel.getColumn() + 2;
+                Object data = editSubjectGradePanel.getData();
+
+                subjectWithGradesPanel.getModel().setValueAt(data, row, col);
             }
         });
 
@@ -212,15 +235,38 @@ public class CheckListManagementInterface extends JFrame
             }
         });
 
+        editCoursePanel.getSaveData().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                // update table of sub panels correspond to the new data
+                int row = editCoursePanel.getRow();
+                int col = editCoursePanel.getColumn();
+                Object data = editCoursePanel.getData();
+
+                if (col == 0) {
+                    subjectWithGradesPanel.getModel().setValueAt(data, row, col+2);
+                    subjectPanel.getModel().setValueAt(data, row, col + 2);
+                    editSubjectGradePanel.getModel().setValueAt(data, row, col);
+                }
+                else if (col == 1)
+                {
+                    subjectWithGradesPanel.getModel().setValueAt(data, row, col+2);
+                    subjectPanel.getModel().setValueAt(data, row, col + 2);
+                    editSubjectGradePanel.getModel().setValueAt(data, row, col);
+                }
+
+            }
+        });
+
     }
 
     private void initButton(JButton button) {
         buttonStyle(button);
     }
-
     private void buttonStyle(JButton button) {
     }
-
     private void changeScreen(String screen) {
         ((CardLayout)cardPanel.getLayout()).show(cardPanel, screen); // -> show the appropriate panel
         // The arguments are the "parent panel" and the "id" of a child panel in a parent panel, respectively.

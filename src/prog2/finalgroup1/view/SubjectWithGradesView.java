@@ -13,6 +13,7 @@ public class SubjectWithGradesView extends JPanel {
     private AdditionalCourseView additionalCourseView;
     private JButton backMainMenu;
     private JButton addNewCourse;
+    private JButton additionalCourse;
     private JTable tableOfData;
     private String[][] excelData;
     private final String[] columnTitle = {"YEAR", "SEMESTER", "COURSE CODE", "COMPUTER SCIENCE", "UNITS", "GRADES"};
@@ -76,7 +77,7 @@ public class SubjectWithGradesView extends JPanel {
 
     private void displayAddCourseComponent(UserModel model) {
         additionalCourseView = new AdditionalCourseView(model);
-        JButton additionalCourse = additionalCourseView.getAdditionalCourse();
+        additionalCourse = additionalCourseView.getAdditionalCourse();
         additionalCourse.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -118,11 +119,42 @@ public class SubjectWithGradesView extends JPanel {
         return allData;
     }
 
+    public AdditionalCourseView getAdditionalCourseView() {
+        return additionalCourseView;
+    }
+
+    public void setAdditionalCourseView(AdditionalCourseView additionalCourseView) {
+        this.additionalCourseView = additionalCourseView;
+    }
+
     public JButton getBackMainMenu() {
         return backMainMenu;
     }
 
     public void setBackMainMenu(JButton backMainMenu) {
         this.backMainMenu = backMainMenu;
+    }
+    public JButton getAddNewCourse() {
+        return addNewCourse;
+    }
+
+    public void setAddNewCourse(JButton addNewCourse) {
+        this.addNewCourse = addNewCourse;
+    }
+
+    public JButton getAdditionalCourse() {
+        return additionalCourse;
+    }
+
+    public void setAdditionalCourse(JButton additionalCourse) {
+        this.additionalCourse = additionalCourse;
+    }
+
+    public DefaultTableModel getModel() {
+        return model;
+    }
+
+    public void setModel(DefaultTableModel model) {
+        this.model = model;
     }
 }

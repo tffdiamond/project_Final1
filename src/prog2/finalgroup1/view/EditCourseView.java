@@ -12,6 +12,7 @@ import prog2.finalgroup1.model.UserModel;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -20,20 +21,19 @@ import java.io.*;
 
 public class EditCourseView extends JPanel {
     private JButton backMainMenu;
+    private JButton saveData;
     private JTable tableOfData;
     private String[][] excelData;
     private final String[] columnTitle = {"COURSE CODE", "COMPUTER SCIENCE", "UNITS"};
     private JScrollPane pane;
+    private DefaultTableModel model;
+    private UserModel userModel;
+    private ExcelSheetData[] sheetData;
+    private int row;
+    private int column;
+    private Object data;
 
-    public JButton getBackMainMenu() {
-        return backMainMenu;
-    }
-
-    public void setBackMainMenu(JButton backMainMenu) {
-        this.backMainMenu = backMainMenu;
-    }
-
-    public EditCourseView(ExcelSheetData[] data, UserModel model)
+    public EditCourseView(ExcelSheetData[] data, UserModel userModel)
     {
        /*
         // an algorithm to sort subjects that have been taken
@@ -44,9 +44,36 @@ public class EditCourseView extends JPanel {
         setLayout(mainGrid);
         setBackground(Color.cyan);
 
-        excelData = processedData(data);
+        this.userModel = userModel;
+        this.sheetData = data;
 
-        setUpTable(model);
+        excelData = processedData();
+
+        setUpTable();
+
+        saveData = new JButton("Apply");
+        saveData.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+//                tableOfData.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+//
+//                tableOfData.getModel().addTableModelListener(new TableModelListener() {
+//                    @Override
+//                    public void tableChanged(TableModelEvent e) {
+//
+//                        try {
+//                            saveUserInput(e);
+//                        } catch (InvalidFormatException | IOException ex) {
+//                            throw new RuntimeException(ex);
+//                        }
+//
+//                    }
+//                });
+
+            }
+        });
 
         pane = new JScrollPane(tableOfData);
         pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -62,7 +89,6 @@ public class EditCourseView extends JPanel {
             }
         });
 
-        // TO DO: position each component
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -71,12 +97,14 @@ public class EditCourseView extends JPanel {
         constraints.insets = new Insets(20, 20, 0, 0);
         add(this.backMainMenu, constraints);
 
+        add(saveData);
+
         add(pane);
     }
 
-    private void setUpTable(UserModel model) {
-
-        tableOfData = new JTable(excelData, columnTitle) {
+    private void setUpTable() {
+        model = new DefaultTableModel(excelData, columnTitle);
+        tableOfData = new JTable(model) {
 
             // Set each column to be non-editable except fourth column
             @Override
@@ -92,8 +120,7 @@ public class EditCourseView extends JPanel {
             public void tableChanged(TableModelEvent e) {
 
                 try {
-                    saveUserInput(model, e);
-
+                    saveUserInput(e);
                 } catch (InvalidFormatException | IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -103,28 +130,36 @@ public class EditCourseView extends JPanel {
 
     }
 
-    private void saveUserInput(UserModel userModel, TableModelEvent e) throws IOException, InvalidFormatException {
+    public void insertNewDataInTable(String[] dataToString) {
+        String[] newData = {dataToString[2], dataToString[3], dataToString[4]};
+        model.insertRow(tableOfData.getRowCount(), newData);
+    }
 
+    private void saveUserInput(TableModelEvent e) throws IOException, InvalidFormatException {
         OPCPackage pkg2 = OPCPackage.open(new File("res/StudentData.xlsx"));
         XSSFWorkbook CS_studentWorkBook = new XSSFWorkbook(pkg2);
-//        TableModel model = tableOfData.getModel();
         XSSFSheet sheet;
         Row rowExcel;
         Cell cell;
         int lastCell;
-        int row = e.getFirstRow();
-        int col = e.getColumn();
+        row = e.getFirstRow();
+        column = e.getColumn();
         TableModel model = (TableModel) e.getSource();
+
+        if (column == -1)
+        {
+            return;
+        }
 
         sheet = CS_studentWorkBook.getSheet(userModel.getUsername());
 
-        Object data = model.getValueAt(row, col);
+        data = model.getValueAt(row, column);
 
         // write the data change in appropriate sheet of a user
         rowExcel = sheet.getRow(row+1);
 
         // compare the description title column of Jtable to user course title
-        if (col == 1) {
+        if (column == 1) {
             if (rowExcel != null) {
                 lastCell = rowExcel.getLastCellNum()-2;
                 cell = rowExcel.getCell(lastCell - 1);
@@ -136,7 +171,7 @@ public class EditCourseView extends JPanel {
         }
 
         // compare the course code of Jtable column to user course code
-        else if (col == 0)
+        else if (column == 0)
         {
             if (rowExcel != null) {
                 lastCell = rowExcel.getLastCellNum()-3;
@@ -158,15 +193,15 @@ public class EditCourseView extends JPanel {
 
     }
 
-    public String[][] processedData (ExcelSheetData[] data) {
-        String[][] allData = new String[data.length][3];
+    public String[][] processedData () {
+        String[][] allData = new String[sheetData.length][3];
 
         String[] arr = new String[3];
 
         int i=0;
-        while (i < data.length)
+        while (i < sheetData.length)
         {
-            for (ExcelSheetData pureData : data) {
+            for (ExcelSheetData pureData : sheetData) {
                 arr[0] = pureData.getCourseNumber();
                 arr[1] = pureData.getDescriptiveTitle();
                 arr[2] = String.valueOf(pureData.getUnits());
@@ -179,5 +214,45 @@ public class EditCourseView extends JPanel {
         }
 
         return allData;
+    }
+
+    public JButton getBackMainMenu() {
+        return backMainMenu;
+    }
+
+    public void setBackMainMenu(JButton backMainMenu) {
+        this.backMainMenu = backMainMenu;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
+
+    public JButton getSaveData() {
+        return saveData;
+    }
+
+    public void setSaveData(JButton saveData) {
+        this.saveData = saveData;
     }
 }

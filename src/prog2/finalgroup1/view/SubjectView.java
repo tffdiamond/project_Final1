@@ -1,8 +1,8 @@
 package prog2.finalgroup1.view;
 
 import prog2.finalgroup1.model.ExcelSheetData;
-
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,6 +13,8 @@ public class SubjectView extends JPanel {
     private String[][] excelData;
     private final String[] columnTitle = {"YEAR", "SEMESTER" ,"COURSE CODE", "COMPUTER SCIENCE", "UNITS"};
     private JScrollPane pane;
+    private DefaultTableModel model;
+
 
     public SubjectView(ExcelSheetData[] data)
     {
@@ -23,8 +25,9 @@ public class SubjectView extends JPanel {
         setBackground(Color.cyan);
 
         excelData = processedData(data);
-        tableOfData = new JTable(excelData, columnTitle);
-        tableOfData.setEnabled(false);
+
+        setUpTable();
+
         pane = new JScrollPane(tableOfData);
         pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -51,10 +54,21 @@ public class SubjectView extends JPanel {
         add(pane);
     }
 
-    public String[][] processedData (ExcelSheetData[] data) {
-        String allData[][] = new String[data.length][5];
+    private void setUpTable() {
+        model = new DefaultTableModel(excelData, columnTitle);
+        tableOfData = new JTable(model);
+        tableOfData.setEnabled(false);
+    }
 
-        String arr[] = new String[5];
+    public void insertNewDataInTable(String[] dataToString) {
+        String[] newData = {dataToString[0], dataToString[1], dataToString[2], dataToString[3], dataToString[4]};
+        model.insertRow(tableOfData.getRowCount(), newData);
+    }
+
+    public String[][] processedData (ExcelSheetData[] data) {
+        String[][] allData = new String[data.length][5];
+
+        String[] arr = new String[5];
 
         int i=0;
         while (i < data.length)
@@ -74,6 +88,14 @@ public class SubjectView extends JPanel {
         }
 
         return allData;
+    }
+
+    public DefaultTableModel getModel() {
+        return model;
+    }
+
+    public void setModel(DefaultTableModel model) {
+        this.model = model;
     }
 
     public JButton getBackMainMenu() {
