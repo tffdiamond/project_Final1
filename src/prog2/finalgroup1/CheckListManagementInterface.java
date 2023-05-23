@@ -133,6 +133,7 @@ public class CheckListManagementInterface extends JFrame
         cardPanel.add(editSubjectGradePanel, EditSubjectGradePanelID);
         cardPanel.add(editCoursePanel, EditCourseID);
     }
+
     private void displayCourseEditComponent() {
         changeScreen(EditCourseID);
     }
@@ -262,11 +263,25 @@ public class CheckListManagementInterface extends JFrame
 
     }
 
+    /**
+     *
+     * @param button
+     */
     private void initButton(JButton button) {
         buttonStyle(button);
     }
+
+    /**
+     *
+     * @param button
+     */
     private void buttonStyle(JButton button) {
     }
+
+    /**
+     *
+     * @param screen
+     */
     private void changeScreen(String screen) {
         ((CardLayout)cardPanel.getLayout()).show(cardPanel, screen); // -> show the appropriate panel
         // The arguments are the "parent panel" and the "id" of a child panel in a parent panel, respectively.
