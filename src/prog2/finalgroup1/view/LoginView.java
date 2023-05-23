@@ -43,7 +43,9 @@ public class LoginView extends JPanel {
 
         initPanel();
 
+        JLabel usernameLabel = new JLabel("Username");
         username = new JTextField(10);
+        JLabel passwordLabel = new JLabel("Password");
         password = new JPasswordField(10);
 
         userLogin = new JButton("Login");
@@ -87,7 +89,9 @@ public class LoginView extends JPanel {
         setUpFrame();
 
         // add components in main panel
+        mainPanel.add(usernameLabel);
         mainPanel.add(username);
+        mainPanel.add(passwordLabel);
         mainPanel.add(password);
         mainPanel.add(userLogin);
         mainPanel.add(userSignUp);
