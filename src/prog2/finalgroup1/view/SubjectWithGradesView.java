@@ -20,6 +20,11 @@ public class SubjectWithGradesView extends JPanel {
     private JScrollPane pane;
     private DefaultTableModel model;
 
+    /**
+     *
+     * @param data
+     * @param model
+     */
     public SubjectWithGradesView(ExcelSheetData[] data, UserModel model) {
         GridBagLayout mainGrid = new GridBagLayout();
         GridBagConstraints constraints = new GridBagConstraints();
@@ -75,6 +80,10 @@ public class SubjectWithGradesView extends JPanel {
         tableOfData.setEnabled(false);
     }
 
+    /**
+     *
+     * @param model
+     */
     private void displayAddCourseComponent(UserModel model) {
         additionalCourseView = new AdditionalCourseView(model);
         additionalCourse = additionalCourseView.getAdditionalCourse();
@@ -94,6 +103,11 @@ public class SubjectWithGradesView extends JPanel {
         model.insertRow(tableOfData.getRowCount(), additionalCourseView.getDataToString());
     }
 
+    /**
+     *
+     * @param data
+     * @return
+     */
     public String[][] processedData(ExcelSheetData[] data) {
         String allData[][] = new String[data.length][6];
 
@@ -119,41 +133,82 @@ public class SubjectWithGradesView extends JPanel {
         return allData;
     }
 
+    /**
+     *
+     * @return
+     */
     public AdditionalCourseView getAdditionalCourseView() {
         return additionalCourseView;
     }
 
+    /**
+     *
+     * @param additionalCourseView
+     */
     public void setAdditionalCourseView(AdditionalCourseView additionalCourseView) {
         this.additionalCourseView = additionalCourseView;
     }
 
+    /**
+     *
+     * @return
+     */
     public JButton getBackMainMenu() {
         return backMainMenu;
     }
 
+    /**
+     *
+     * @param backMainMenu
+     */
     public void setBackMainMenu(JButton backMainMenu) {
         this.backMainMenu = backMainMenu;
     }
+
+    /**
+     *
+     * @return
+     */
     public JButton getAddNewCourse() {
         return addNewCourse;
     }
 
+    /**
+     *
+     * @param addNewCourse
+     */
     public void setAddNewCourse(JButton addNewCourse) {
         this.addNewCourse = addNewCourse;
     }
 
+    /**
+     *
+     * @return
+     */
     public JButton getAdditionalCourse() {
         return additionalCourse;
     }
 
+    /**
+     *
+     * @param additionalCourse
+     */
     public void setAdditionalCourse(JButton additionalCourse) {
         this.additionalCourse = additionalCourse;
     }
 
+    /**
+     *
+     * @return
+     */
     public DefaultTableModel getModel() {
         return model;
     }
 
+    /**
+     *
+     * @param model
+     */
     public void setModel(DefaultTableModel model) {
         this.model = model;
     }
