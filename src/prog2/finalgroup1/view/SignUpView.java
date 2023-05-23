@@ -69,14 +69,22 @@ public class SignUpView extends JPanel {
             }
         });
 
+        JLabel fNameLabel = new JLabel("Firstname");
         firstName = new JTextField(10);
+        JLabel lNameLabel = new JLabel("Lastname");
         lastName = new JTextField(10);
+        JLabel usernameLabel = new JLabel("Username");
         username = new JTextField(10);
+        JLabel passwordLabel = new JLabel("Password");
         password = new JPasswordField(10);
 
+        add(fNameLabel);
         add(firstName);
+        add(lNameLabel);
         add(lastName);
+        add(usernameLabel);
         add(username);
+        add(passwordLabel);
         add(password);
         add(sign_up);
         add(back_button);
