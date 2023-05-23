@@ -16,6 +16,10 @@ public class SubjectView extends JPanel {
     private DefaultTableModel model;
 
 
+    /**
+     *
+     * @param data
+     */
     public SubjectView(ExcelSheetData[] data)
     {
         GridBagLayout mainGrid = new GridBagLayout();
@@ -60,11 +64,20 @@ public class SubjectView extends JPanel {
         tableOfData.setEnabled(false);
     }
 
+    /**
+     *
+     * @param dataToString
+     */
     public void insertNewDataInTable(String[] dataToString) {
         String[] newData = {dataToString[0], dataToString[1], dataToString[2], dataToString[3], dataToString[4]};
         model.insertRow(tableOfData.getRowCount(), newData);
     }
 
+    /**
+     *
+     * @param data
+     * @return
+     */
     public String[][] processedData (ExcelSheetData[] data) {
         String[][] allData = new String[data.length][5];
 
@@ -90,18 +103,34 @@ public class SubjectView extends JPanel {
         return allData;
     }
 
+    /**
+     *
+     * @return
+     */
     public DefaultTableModel getModel() {
         return model;
     }
 
+    /**
+     *
+     * @param model
+     */
     public void setModel(DefaultTableModel model) {
         this.model = model;
     }
 
+    /**
+     *
+     * @return
+     */
     public JButton getBackMainMenu() {
         return backMainMenu;
     }
 
+    /**
+     *
+     * @param backMainMenu
+     */
     public void setBackMainMenu(JButton backMainMenu) {
         this.backMainMenu = backMainMenu;
     }
