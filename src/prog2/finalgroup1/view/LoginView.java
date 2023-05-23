@@ -48,6 +48,7 @@ public class LoginView extends JPanel {
         JLabel passwordLabel = new JLabel("Password");
         password = new JPasswordField(10);
 
+
         userLogin = new JButton("Login");
         userLogin.addMouseListener(new MouseAdapter() {
             @Override
@@ -113,6 +114,10 @@ public class LoginView extends JPanel {
         changeScreen(signUpPanelID);
     }
 
+    /**
+     *
+     * @param screen
+     */
     private void changeScreen(String screen) {
         ((CardLayout) cardPanel.getLayout()).show(cardPanel, screen);
     }
@@ -131,6 +136,12 @@ public class LoginView extends JPanel {
         });
     }
 
+    /**
+     *
+     * @param user
+     * @return
+     * @throws IOException
+     */
     private boolean authenticateUserLogin(UserModel user) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader("usersData/privateInformation"));
         String lineOfText = reader.readLine();
@@ -149,6 +160,11 @@ public class LoginView extends JPanel {
 
         return false;
     }
+
+    /**
+     *
+     * @return
+     */
     public ExcelSheetData[] loadUserData() {
         ExcelSheetData[] data;
         try {
@@ -181,6 +197,11 @@ public class LoginView extends JPanel {
         return null;
     }
 
+    /**
+     *
+     * @param row
+     * @return
+     */
     private ExcelSheetData rowCells(Row row) {
         return new ExcelSheetData((int) Double.parseDouble(String.valueOf(row.getCell(0))),
                 (int) Double.parseDouble(String.valueOf(row.getCell(1))),
@@ -188,34 +209,66 @@ public class LoginView extends JPanel {
                 ,Double.parseDouble(String.valueOf(row.getCell(4))), String.valueOf(row.getCell(5)));
     }
 
+    /**
+     *
+     * @return
+     */
     public JButton getUserLogin() {
         return userLogin;
     }
 
+    /**
+     *
+     * @param userLogin
+     */
     public void setUserLogin(JButton userLogin) {
         this.userLogin = userLogin;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTextField getUsername() {
         return username;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTextField getPassword() {
         return password;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isUserExist() {
         return userExist;
     }
 
+    /**
+     *
+     * @param userExist
+     */
     public void setUserExist(boolean userExist) {
         this.userExist = userExist;
     }
 
+    /**
+     *
+     * @return
+     */
     public UserModel getUser() {
         return user;
     }
 
+    /**
+     *
+     * @param user
+     */
     public void setUser(UserModel user) {
         this.user = user;
     }
