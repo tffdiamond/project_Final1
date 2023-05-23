@@ -24,7 +24,7 @@ public class LoginView extends JPanel {
     private SignUpView signUpView;
     private UserModel user;
     private JTextField username;
-    private JTextField password;
+    private JPasswordField password;
     private JButton userLogin;
     private final JPanel cardPanel;
     private final JPanel mainPanel;
@@ -44,7 +44,7 @@ public class LoginView extends JPanel {
         initPanel();
 
         username = new JTextField(10);
-        password = new JTextField(10);
+        password = new JPasswordField(10);
 
         userLogin = new JButton("Login");
         userLogin.addMouseListener(new MouseAdapter() {

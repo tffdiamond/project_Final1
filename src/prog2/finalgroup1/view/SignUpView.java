@@ -10,8 +10,6 @@ import java.util.Objects;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.ss.formula.functions.Column;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -21,9 +19,9 @@ public class SignUpView extends JPanel {
     private final JTextField firstName;
     private final JTextField lastName;
     private final JTextField username;
-    private final JTextField password;
+    private final JPasswordField password;
     private JButton sign_up;
-    private JButton back_button;
+    private JButton back_button;    
     private XSSFWorkbook CS_curriculumWorkBook;
     private XSSFWorkbook CS_studentWorkBook;
 
@@ -51,6 +49,7 @@ public class SignUpView extends JPanel {
                         if (isAccountCreated) {
                             JOptionPane.showMessageDialog(null, "Account created");
                             createUserDataFile();
+                            setVisible(false);
                         }
                     } catch (Exception exception) {
                         exception.printStackTrace();
@@ -73,7 +72,7 @@ public class SignUpView extends JPanel {
         firstName = new JTextField(10);
         lastName = new JTextField(10);
         username = new JTextField(10);
-        password = new JTextField(10);
+        password = new JPasswordField(10);
 
         add(firstName);
         add(lastName);
