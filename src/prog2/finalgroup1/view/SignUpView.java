@@ -78,6 +78,7 @@ public class SignUpView extends JPanel {
         JLabel passwordLabel = new JLabel("Password");
         password = new JPasswordField(10);
 
+
         add(fNameLabel);
         add(firstName);
         add(lNameLabel);
@@ -90,6 +91,11 @@ public class SignUpView extends JPanel {
         add(back_button);
     }
 
+    /**
+     *
+     * @return
+     * @throws IOException
+     */
     private boolean userInformation() throws IOException {
         ArrayList<String> listOfAccountCreated = new ArrayList<>();
         String usersPrivateInformation;
@@ -116,6 +122,11 @@ public class SignUpView extends JPanel {
         return value;
     }
 
+    /**
+     *
+     * @throws IOException
+     * @throws InvalidFormatException
+     */
     private void createUserDataFile() throws IOException, InvalidFormatException {
         OPCPackage pkg1 = OPCPackage.open(new File("res/BSCSCurriculumData1.xlsx"));
         CS_curriculumWorkBook = new XSSFWorkbook(pkg1);
@@ -176,22 +187,38 @@ public class SignUpView extends JPanel {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public JButton getSign_up() {
         return sign_up;
     }
 
+    /**
+     *
+     * @param sign_up
+     */
     public void setSign_up(JButton sign_up) {
         this.sign_up = sign_up;
     }
 
+    /**
+     *
+     * @return
+     */
     public JButton getBack_button() {
         return back_button;
     }
 
+    /**
+     *
+     * @param back_button
+     */
     public void setBack_button(JButton back_button) {
         this.back_button = back_button;
     }
 
-    }
+}
 
 
