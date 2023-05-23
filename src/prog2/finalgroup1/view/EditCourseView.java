@@ -62,21 +62,6 @@ public class EditCourseView extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
-//                tableOfData.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-//
-//                tableOfData.getModel().addTableModelListener(new TableModelListener() {
-//                    @Override
-//                    public void tableChanged(TableModelEvent e) {
-//
-//                        try {
-//                            saveUserInput(e);
-//                        } catch (InvalidFormatException | IOException ex) {
-//                            throw new RuntimeException(ex);
-//                        }
-//
-//                    }
-//                });
-
             }
         });
 
