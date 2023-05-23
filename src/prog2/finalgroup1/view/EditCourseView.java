@@ -33,6 +33,11 @@ public class EditCourseView extends JPanel {
     private int column;
     private Object data;
 
+    /**
+     *
+     * @param data
+     * @param userModel
+     */
     public EditCourseView(ExcelSheetData[] data, UserModel userModel)
     {
        /*
@@ -102,6 +107,7 @@ public class EditCourseView extends JPanel {
         add(pane);
     }
 
+
     private void setUpTable() {
         model = new DefaultTableModel(excelData, columnTitle);
         tableOfData = new JTable(model) {
@@ -130,11 +136,21 @@ public class EditCourseView extends JPanel {
 
     }
 
+    /**
+     *
+     * @param dataToString
+     */
     public void insertNewDataInTable(String[] dataToString) {
         String[] newData = {dataToString[2], dataToString[3], dataToString[4]};
         model.insertRow(tableOfData.getRowCount(), newData);
     }
 
+    /**
+     *
+     * @param e
+     * @throws IOException
+     * @throws InvalidFormatException
+     */
     private void saveUserInput(TableModelEvent e) throws IOException, InvalidFormatException {
         OPCPackage pkg2 = OPCPackage.open(new File("res/StudentData.xlsx"));
         XSSFWorkbook CS_studentWorkBook = new XSSFWorkbook(pkg2);
@@ -193,6 +209,10 @@ public class EditCourseView extends JPanel {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public String[][] processedData () {
         String[][] allData = new String[sheetData.length][3];
 
@@ -216,42 +236,82 @@ public class EditCourseView extends JPanel {
         return allData;
     }
 
+    /**
+     *
+     * @return
+     */
     public JButton getBackMainMenu() {
         return backMainMenu;
     }
 
+    /**
+     *
+     * @param backMainMenu
+     */
     public void setBackMainMenu(JButton backMainMenu) {
         this.backMainMenu = backMainMenu;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getRow() {
         return row;
     }
 
+    /**
+     *
+     * @param row
+     */
     public void setRow(int row) {
         this.row = row;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getColumn() {
         return column;
     }
 
+    /**
+     *
+     * @param column
+     */
     public void setColumn(int column) {
         this.column = column;
     }
 
+    /**
+     *
+     * @return
+     */
     public Object getData() {
         return data;
     }
 
+    /**
+     *
+     * @param data
+     */
     public void setData(Object data) {
         this.data = data;
     }
 
+    /**
+     *
+     * @return
+     */
     public JButton getSaveData() {
         return saveData;
     }
 
+    /**
+     *
+     * @param saveData
+     */
     public void setSaveData(JButton saveData) {
         this.saveData = saveData;
     }
