@@ -16,7 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 
-public class AdditionalCourseView extends JFrame {
+public class AdditionalCourse extends JFrame {
     private JComboBox<String> semester;
     private JComboBox<String> year;
     private String semesterItem;
@@ -35,7 +35,7 @@ public class AdditionalCourseView extends JFrame {
      *
      * @param userModel
      */
-    AdditionalCourseView(UserModel userModel)
+    AdditionalCourse(UserModel userModel)
     {
         setSize(400, 400);
         GridBagLayout mainGrid = new GridBagLayout();

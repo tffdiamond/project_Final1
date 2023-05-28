@@ -16,10 +16,10 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Objects;
 
-public class LoginView extends JPanel {
+public class Login extends JPanel {
     private final String mainPanelID = "main_id";
     private final String signUpPanelID = "sign-up-id";
-    private SignUpView signUpView;
+    private SignUp signUpView;
     private UserModel user;
     private JTextField username;
     private JPasswordField password;
@@ -28,11 +28,11 @@ public class LoginView extends JPanel {
     private final JPanel mainPanel;
     private boolean userExist;
 
-    public LoginView()
+    public Login()
     {
+        setLayout(new BorderLayout());
         GridBagLayout mainGrid = new GridBagLayout();
         GridBagConstraints constraints = new GridBagConstraints();
-        setPreferredSize(new Dimension(800, 500));
         mainPanel = new JPanel(mainGrid);
         mainPanel.setBackground(Color.pink);
 
@@ -121,7 +121,7 @@ public class LoginView extends JPanel {
     }
 
     private void initPanel() {
-        signUpView = new SignUpView();
+        signUpView = new SignUp();
 
         signUpView.getBack_button().addMouseListener(new MouseAdapter() {
             @Override

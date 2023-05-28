@@ -9,9 +9,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class SubjectWithGradesView extends JPanel {
-    private AdditionalCourseView additionalCourseView;
-    private JButton backMainMenu;
+public class Curriculum extends JPanel {
+    private AdditionalCourse additionalCourseView;
     private JButton addNewCourse;
     private JButton additionalCourse;
     private JTable tableOfData;
@@ -25,10 +24,9 @@ public class SubjectWithGradesView extends JPanel {
      * @param data
      * @param model
      */
-    public SubjectWithGradesView(ExcelSheetData[] data, UserModel model) {
+    public Curriculum(ExcelSheetData[] data, UserModel model) {
         GridBagLayout mainGrid = new GridBagLayout();
         GridBagConstraints constraints = new GridBagConstraints();
-        setPreferredSize(new Dimension(800, 500));
         setLayout(mainGrid);
         setBackground(Color.cyan);
 
@@ -40,17 +38,6 @@ public class SubjectWithGradesView extends JPanel {
         pane = new JScrollPane(tableOfData);
         pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        backMainMenu = new JButton("Back");
-        this.backMainMenu.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-
-                setVisible(false);
-
-            }
-        });
-
         addNewCourse = new JButton("Add Course");
         addNewCourse.addMouseListener(new MouseAdapter() {
             @Override
@@ -60,15 +47,6 @@ public class SubjectWithGradesView extends JPanel {
                 displayAddCourseComponent(model);
             }
         });
-
-        // TO DO: position each component
-        constraints.anchor = GridBagConstraints.FIRST_LINE_START;
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.weightx = 0;
-        constraints.weighty = 0;
-        constraints.insets = new Insets(20, 20, 0, 0);
-        add(this.backMainMenu, constraints);
 
         add(pane);
         add(addNewCourse);
@@ -85,7 +63,7 @@ public class SubjectWithGradesView extends JPanel {
      * @param model
      */
     private void displayAddCourseComponent(UserModel model) {
-        additionalCourseView = new AdditionalCourseView(model);
+        additionalCourseView = new AdditionalCourse(model);
         additionalCourse = additionalCourseView.getAdditionalCourse();
         additionalCourse.addMouseListener(new MouseAdapter() {
             @Override
@@ -137,7 +115,7 @@ public class SubjectWithGradesView extends JPanel {
      *
      * @return
      */
-    public AdditionalCourseView getAdditionalCourseView() {
+    public AdditionalCourse getAdditionalCourseView() {
         return additionalCourseView;
     }
 
@@ -145,30 +123,10 @@ public class SubjectWithGradesView extends JPanel {
      *
      * @param additionalCourseView
      */
-    public void setAdditionalCourseView(AdditionalCourseView additionalCourseView) {
+    public void setAdditionalCourseView(AdditionalCourse additionalCourseView) {
         this.additionalCourseView = additionalCourseView;
     }
 
-    /**
-     *
-     * @return
-     */
-    public JButton getBackMainMenu() {
-        return backMainMenu;
-    }
-
-    /**
-     *
-     * @param backMainMenu
-     */
-    public void setBackMainMenu(JButton backMainMenu) {
-        this.backMainMenu = backMainMenu;
-    }
-
-    /**
-     *
-     * @return
-     */
     public JButton getAddNewCourse() {
         return addNewCourse;
     }

@@ -7,24 +7,28 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class SubjectView extends JPanel {
-    private JButton backMainMenu;
+public class UserCurriculum extends JPanel {
     private JTable tableOfData;
     private String[][] excelData;
-    private final String[] columnTitle = {"YEAR", "SEMESTER" ,"COURSE CODE", "COMPUTER SCIENCE", "UNITS"};
+    private final String[] columnTitle = {"YEAR", "SEMESTER" ,"COURSE CODE", "DESCRIPTIVE TITLE", "UNITS"};
     private JScrollPane pane;
     private DefaultTableModel model;
 
-
+    /*
+        TO DO:
+            - only display courses the user had been taken
+            - implement a sorting functionality -> descending grades or ascending grades
+            - implement a logic that deletes courses -> use checkbox
+            -
+     */
     /**
      *
      * @param data
      */
-    public SubjectView(ExcelSheetData[] data)
+    public UserCurriculum(ExcelSheetData[] data)
     {
         GridBagLayout mainGrid = new GridBagLayout();
         GridBagConstraints constraints = new GridBagConstraints();
-        setPreferredSize(new Dimension(800, 500));
         setLayout(mainGrid);
         setBackground(Color.cyan);
 
@@ -35,25 +39,6 @@ public class SubjectView extends JPanel {
         pane = new JScrollPane(tableOfData);
         pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        backMainMenu = new JButton("Back");
-        this.backMainMenu.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-
-                setVisible(false);
-
-            }
-        });
-
-        // TO DO: position each component
-        constraints.anchor = GridBagConstraints.FIRST_LINE_START;
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.weightx = 0;
-        constraints.weighty = 0;
-        constraints.insets = new Insets(20, 20, 0, 0);
-        add(this.backMainMenu, constraints);
 
         add(pane);
     }
@@ -123,16 +108,5 @@ public class SubjectView extends JPanel {
      *
      * @return
      */
-    public JButton getBackMainMenu() {
-        return backMainMenu;
-    }
-
-    /**
-     *
-     * @param backMainMenu
-     */
-    public void setBackMainMenu(JButton backMainMenu) {
-        this.backMainMenu = backMainMenu;
-    }
 }
 

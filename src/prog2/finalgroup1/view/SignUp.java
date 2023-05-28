@@ -14,7 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-public class SignUpView extends JPanel {
+public class SignUp extends JPanel {
 
     private final JTextField firstName;
     private final JTextField lastName;
@@ -25,7 +25,7 @@ public class SignUpView extends JPanel {
     private XSSFWorkbook CS_curriculumWorkBook;
     private XSSFWorkbook CS_studentWorkBook;
 
-    public SignUpView() {
+    public SignUp() {
         GridBagLayout mainGrid = new GridBagLayout();
         GridBagConstraints constraints = new GridBagConstraints();
         setPreferredSize(new Dimension(800, 500));

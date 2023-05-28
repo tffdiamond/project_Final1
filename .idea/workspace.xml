@@ -4,6 +4,17 @@
     <list default="true" id="17fa2715-68d2-4b86-be6d-f1362ca8d533" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/BSCSCurriculumData1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/res/BSCSCurriculumData1.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/StudentData.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/res/StudentData.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prog2/finalgroup1/CheckListManagementInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prog2/finalgroup1/CheckListManagementInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prog2/finalgroup1/view/AdditionalCourseView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prog2/finalgroup1/view/AdditionalCourse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prog2/finalgroup1/view/EditCourseView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prog2/finalgroup1/view/EditSubjectGradeView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prog2/finalgroup1/view/LoginView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prog2/finalgroup1/view/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prog2/finalgroup1/view/SignUpView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prog2/finalgroup1/view/SignUp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prog2/finalgroup1/view/SubjectView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prog2/finalgroup1/view/UserCurriculum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prog2/finalgroup1/view/SubjectWithGradesView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/prog2/finalgroup1/view/Curriculum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/usersData/privateInformation" beforeDir="false" afterPath="$PROJECT_DIR$/usersData/privateInformation" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,6 +197,10 @@
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
           <option name="timeStamp" value="15" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.IllegalArgumentException" package="java.lang" />
+          <option name="timeStamp" value="16" />
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
